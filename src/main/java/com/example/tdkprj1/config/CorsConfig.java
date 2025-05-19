@@ -15,7 +15,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true); // JWT 포함 요청 가능
-        config.setAllowedOriginPatterns(List.of("*")); // 모든 Origin 허용
+        config.setAllowedOrigins(List.of("http://localhost:3000"));  // 모든 Origin 허용
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // HTTP 메서드 허용
 

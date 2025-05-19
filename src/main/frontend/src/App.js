@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Main />} />
 
           {/* 로그인 페이지 경로 설정 */}
-          <Route path="/login1" element={<Login />} />
+          <Route path="/login" element={<Login />} />
 
           {/* 회원가입 경로 설정 */}
           <Route path="/join" element={<Join />} />
