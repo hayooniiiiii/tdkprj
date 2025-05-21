@@ -15,9 +15,6 @@ public class TbLeave {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "field")
-    private String field;
-
     @ColumnDefault("0")
     @Column(name = "leave_iwol", nullable = false)
     private Integer leaveIwol;
@@ -37,5 +34,13 @@ public class TbLeave {
     @ColumnDefault("0")
     @Column(name = "leave_useday", nullable = false)
     private Integer leaveUseday;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private TbUser user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_id")
+    private TbDocument document;
 
 }

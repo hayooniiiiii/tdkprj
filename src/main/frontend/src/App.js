@@ -7,6 +7,8 @@ import {Join} from "./pages/Accountpage/Join";
 import {Showlist} from "./pages/Documentpage/Showlist";
 import {Showdetail} from "./pages/Documentpage/Showdetail";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DocumentDetail from "./pages/DocumentDetailPage/DocumetDetail";
+
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
           <Route path="/show" element={<Showdetail />} />
 
 
+        <Route path="/document/:id" element={<DocumentDetail />} />
 
 
         </Routes>

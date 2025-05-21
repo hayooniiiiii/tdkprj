@@ -34,20 +34,32 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = request.getHeader(JwtProperties.HEADER_STRING);
-        if (header == null || !header.startsWith("Bearer ")) {
+        System.out.println("🔥 JwtAuthorizationFilter 동작 - 토큰 있음");
+
+        String token = null;
+
+        // ✅ 1. 쿠키에서 jwtToken 추출
+        if (request.getCookies() != null) {
+            for (var cookie : request.getCookies()) {
+                if ("jwtToken".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    System.out.println(token);
+                    break;
+                }
+            }
+        }
+
+
+        // ✅ 3. 토큰이 없으면 다음 필터로 넘김
+        if (token == null || !tokenProvider.validateToken(token)) {
             chain.doFilter(request, response);
             return;
         }
 
-        String token = header.replace("Bearer ", "");
-        if (!tokenProvider.validateToken(token)) {
-            chain.doFilter(request, response);
-            return;
-        }
-
+        // ✅ 4. 토큰에서 유저 식별 후 인증 등록
         String loginId = tokenProvider.getClaims(token)
                 .getClaim("userLoginid").asString();
+
         Optional<TbUser> userOpt = userRepository.findByUserLoginid(loginId);
         if (userOpt.isPresent()) {
             TbUser user = userOpt.get();
@@ -66,7 +78,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             Authentication auth = new UsernamePasswordAuthenticationToken(
                     principal, null, principal.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            System.out.println("🧪 인증 여부: " + auth.isAuthenticated());
+            System.out.println(userDto);
         }
+
         chain.doFilter(request, response);
     }
+
 }

@@ -18,8 +18,9 @@ public class AccountController {
 
     @PostMapping("/account/join")
     public ResponseEntity<String> join(@RequestBody UserDto dto) {
-        //System.out.println("오는거임?");
         accountService.join(dto);
         return ResponseEntity.ok("회원가입 완료");
     }
+
+
 }

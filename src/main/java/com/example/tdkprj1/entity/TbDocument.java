@@ -3,6 +3,8 @@ package com.example.tdkprj1.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -21,24 +23,14 @@ public class TbDocument {
 
     @Column(name = "document_title", nullable = false, length = 50)
     private String documentTitle;
-
-    @Column(name = "document_vacationtype", nullable = false, length = 30)
-    private String documentVacationtype;
-
-    @Column(name = "document_vacationstart")
-    private LocalDate documentVacationstart;
-
-    @Column(name = "document_vacationend")
-    private LocalDate documentVacationend;
-
-    @Column(name = "document_vacationday")
-    private Integer documentVacationday;
-
-    @Lob
-    @Column(name = "document_vacationdatail")
-    private String documentVacationdatail;
+    
 
     @Column(name = "document_open", nullable = false)
     private Long documentOpen;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user_id")
+    private TbUser user;
 
 }

@@ -12,7 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
@@ -35,7 +35,9 @@ public class SecurityConfig {
 
         // CORS 필터
         http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                // CSRF 설정
                 .csrf(csrf -> csrf.disable())
+                //세션을 생성하지 않도록 설정함
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // JWT Authentication Filter (폼 로그인 처리)
@@ -51,8 +53,7 @@ public class SecurityConfig {
 
         // 권한 설정 (Spring Security 6.1+)
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login/**", "/account/join").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/login/**", "/account/join","/input").permitAll()
                 .anyRequest().authenticated()
         );
 
